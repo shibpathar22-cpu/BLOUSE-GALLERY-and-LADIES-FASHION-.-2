@@ -1,0 +1,6 @@
+{
+  "name": "Blouse Gallery & Ladies Fashion - Daily Cash Register",
+  "description": "Daily cash and online transaction manager, opening/closing balance tracker, owner drawings, and daily accounts reconciliation for Blouse Gallery & Ladies Fashion boutique.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
