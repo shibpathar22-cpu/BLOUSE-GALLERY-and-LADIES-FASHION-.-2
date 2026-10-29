@@ -4,22 +4,27 @@
  */
 
 import React, { useState } from 'react';
-import { TransactionProvider, useTransactions } from './context/TransactionContext';
-import { Header } from './components/Header';
+import { AuthProvider } from './context/AuthContext';
+import { TransactionProvider } from './context/TransactionContext';
+import { Header, NavTab } from './components/Header';
 import { BalanceSummaryCards } from './components/BalanceSummaryCards';
 import { TransactionList } from './components/TransactionList';
 import { OwnerPayoutsView } from './components/OwnerPayoutsView';
 import { ReportsView } from './components/ReportsView';
+import { BrandingSettingsView } from './components/BrandingSettingsView';
+import { BackupRestoreView } from './components/BackupRestoreView';
+import { UserManagementView } from './components/UserManagementView';
 import { PrintDaySheet } from './components/PrintDaySheet';
 import { TransactionModal } from './components/TransactionModal';
 import { OpeningBalanceModal } from './components/OpeningBalanceModal';
 import { DayCloseModal } from './components/DayCloseModal';
 import { SettingsModal } from './components/SettingsModal';
+import { LoginModal } from './components/LoginModal';
 import { Transaction, TransactionType, PaymentMode } from './types';
 
 function MainApp() {
-  const [activeTab, setActiveTab] = useState<'register' | 'owner' | 'reports' | 'print'>('register');
-  
+  const [activeTab, setActiveTab] = useState<NavTab>('register');
+
   // Modals state
   const [isTxModalOpen, setIsTxModalOpen] = useState(false);
   const [txModalType, setTxModalType] = useState<TransactionType>('receipt');
@@ -29,6 +34,7 @@ function MainApp() {
   const [isOpeningModalOpen, setIsOpeningModalOpen] = useState(false);
   const [isDayCloseModalOpen, setIsDayCloseModalOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const handleOpenCreate = (type: TransactionType, mode: PaymentMode) => {
     setEditingTransaction(null);
@@ -53,6 +59,7 @@ function MainApp() {
         onOpenDayClose={() => setIsDayCloseModalOpen(true)}
         onOpenSettings={() => setIsSettingsModalOpen(true)}
         onOpenOpeningBalance={() => setIsOpeningModalOpen(true)}
+        onOpenLogin={() => setIsLoginModalOpen(true)}
       />
 
       {/* Main Content Area */}
@@ -82,6 +89,15 @@ function MainApp() {
 
         {activeTab === 'reports' && <ReportsView />}
 
+        {/* FEATURE 1: App Branding */}
+        {activeTab === 'branding' && <BrandingSettingsView />}
+
+        {/* FEATURE 2: Backup & Restore */}
+        {activeTab === 'backup' && <BackupRestoreView />}
+
+        {/* FEATURE 3 & 4: User Management, Roles & Audit Logs */}
+        {activeTab === 'users' && <UserManagementView />}
+
         {activeTab === 'print' && <PrintDaySheet />}
       </main>
 
@@ -94,8 +110,11 @@ function MainApp() {
             </strong>{' '}
             • Specialized Daily Cash Register & Accounting Tally
           </div>
-          <div>
-            Cash & Online tracked independently with Day-End reconciliation
+          <div className="flex items-center gap-3">
+            <span className="font-mono text-[11px] bg-neutral-100 px-2 py-0.5 rounded text-neutral-600">
+              v1.2.0 • Android & Web
+            </span>
+            <span>Cash & Online tracked independently</span>
           </div>
         </div>
       </footer>
@@ -126,14 +145,21 @@ function MainApp() {
         isOpen={isSettingsModalOpen}
         onClose={() => setIsSettingsModalOpen(false)}
       />
+
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+      />
     </div>
   );
 }
 
 export default function App() {
   return (
-    <TransactionProvider>
-      <MainApp />
-    </TransactionProvider>
+    <AuthProvider>
+      <TransactionProvider>
+        <MainApp />
+      </TransactionProvider>
+    </AuthProvider>
   );
 }

@@ -70,3 +70,56 @@ export interface DailySummary {
   actualPhysicalCash?: number;
   cashVariance?: number;
 }
+
+export interface AppBranding {
+  logoImageId?: string; // stored in IndexedDB
+  bannerImageId?: string; // stored in IndexedDB
+  logoUrl?: string; // data url or cached preview
+  bannerUrl?: string; // data url or cached preview
+  bannerPosition: 'center' | 'top' | 'bottom';
+  bannerScale: number; // 100 - 150
+  bannerOverlayOpacity: number; // 0.2 - 0.8
+  brandColor?: string;
+  updatedAt?: number;
+}
+
+export type UserRole = 'owner' | 'staff';
+
+export interface StaffPermissions {
+  canManageSales: boolean;
+  canManageExpenses: boolean;
+  canManageCashDrawer: boolean;
+  canViewReports: boolean;
+  canManageStock: boolean;
+}
+
+export interface UserAccount {
+  id: string;
+  name: string;
+  phone: string;
+  role: UserRole;
+  isActive: boolean;
+  permissions: StaffPermissions;
+  createdAt: number;
+  lastLoginAt?: number;
+}
+
+export interface AuditLogEntry {
+  id: string;
+  timestamp: string; // ISO
+  userId: string;
+  userName: string;
+  userRole: UserRole;
+  action: string;
+  resource: string;
+  details: string;
+  result: 'success' | 'failed';
+}
+
+export interface BackupMetadata {
+  lastBackupDate?: string;
+  lastBackupSize?: number;
+  lastBackupRecordsCount?: number;
+  hasSafetySnapshot?: boolean;
+}
+
