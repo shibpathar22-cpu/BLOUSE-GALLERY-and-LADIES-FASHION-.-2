@@ -21,7 +21,7 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Build web app
         run: npm run build
@@ -37,9 +37,8 @@ jobs:
 
       - name: Install Capacitor
         run: |
-          npm install @capacitor/core @capacitor/android
-          npm install --save-dev @capacitor/cli
-
+          npm install --legacy-peer-deps @capacitor/core @capacitor/android
+    npm install --save-dev --legacy-peer-deps @capacitor/cli
       - name: Create Capacitor config if missing
         run: |
           if [ ! -f capacitor.config.ts ] && [ ! -f capacitor.config.json ]; then
